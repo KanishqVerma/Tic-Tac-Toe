@@ -7,9 +7,7 @@ const gameBoard = (() => {
             board[index] = marker;
             return true;
         }
-        else{
-            return false;
-        }
+        return false;
     };
 
     function resetBoard(){
@@ -97,5 +95,5 @@ const gameController = (() => {
 })();
 
 const displayController = (() => {
-
+    
 })();
