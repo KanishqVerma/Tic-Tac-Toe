@@ -48,6 +48,27 @@ h1{
     align-items: center;    
 }
 
+.cell.highlight{
+    background-color: white;
+    color: black;
+}
+
+.highlight svg{
+    fill: currentColor;
+}
+
+.player-1-turn, .player-2-turn{
+    opacity: 0.3;
+}
+
+.player-1-turn.active, .player-2-turn.active{
+    opacity: 1;
+}
+
+.player-info p.active{
+    opacity: 1;
+}
+
 .start-button, .play-again-button{
     /* background-color: rgb(34, 30, 30); */
     background-color: black;
@@ -76,6 +97,13 @@ h1{
     height: 1rem;
     padding-right: 0.6rem;
     padding-bottom: 2px;
+    transition: transform 1s ease;
+    transform-origin: center;
+    transform-box: fill-box;
+}
+
+.play-again-button:hover .play-again-svg{
+    transform: rotate(360deg);
 }
 
 .play-again-svg, .play-again-svg path{
