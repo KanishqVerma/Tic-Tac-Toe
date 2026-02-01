@@ -107,6 +107,7 @@ const gameController = (() => {
     function resetGame(){
         gameFinished = false;
         gameBoard.resetBoard();
+        currentPlayer = playerX;
     }
 
     return {makeMove, checkWin, resetGame, getCurrentPlayerMarker, isGameFinished};
@@ -117,7 +118,10 @@ const displayController = (() => {
         const startButton = document.querySelector('.start-button');
         startButton.addEventListener("click", () => {
             createGrid();
-            startButton.remove();
+            const spacer = document.createElement("div");
+            spacer.style.width = startButton.offsetWidth + "px";
+            spacer.style.height = startButton.offsetHeight + "px";
+            startButton.replaceWith(spacer);
         });
     }
     let startFlag = false;
@@ -136,6 +140,12 @@ const displayController = (() => {
             cell.classList.add('cell');
             gameGrid.append(cell);
         }
+
+        const resultText = document.createElement("p");
+        resultText.classList.add("result-text");
+        gameContainer.append(resultText);
+
+        createReplayButton(gameContainer);
         startFlag = true;
 
         markMove();
@@ -216,7 +226,7 @@ const displayController = (() => {
     // 0 -> draw, 1 -> player1 wins, 2-> player2
     function declareResult(number, winningCells = null){
         const gameContainer = document.querySelector('.game-container');
-        const winnerDeclaration = document.createElement("p");
+        const winnerDeclaration = document.querySelector(".result-text");
         if (number === 0){
             winnerDeclaration.textContent = "It's a draw!!"
         } else if (number === 1){
@@ -224,11 +234,13 @@ const displayController = (() => {
         } else if (number === 2){
             winnerDeclaration.textContent = "Player 2 WON !!"
         }
-        gameContainer.appendChild(winnerDeclaration);
+        if (replayButton) {
+            gameContainer.insertBefore(resultText, replayButton);
+        }
+
         if (winningCells){
             highlightWinningCells(winningCells);
         }
-        createReplayButton(gameContainer);
     }
 
     function highlightWinningCells(winningCells){
@@ -241,6 +253,9 @@ const displayController = (() => {
     }
 
     function createReplayButton(gameContainer){
+        if (document.querySelector(".play-again-button")){
+            return;
+        }
         const replayButton = document.createElement('button');
         replayButton.classList.add('play-again-button');
         const svgNS = "http://www.w3.org/2000/svg";
@@ -271,9 +286,12 @@ const displayController = (() => {
             cell.innerHTML = "";
             cell.classList.remove("highlight");
         });
-        const gameContainer = document.querySelector('.game-container');
-        gameContainer.removeChild(gameContainer.children[2]);
-        gameContainer.removeChild(gameContainer.children[1]);
+        
+        const resultText = document.querySelector(".result-text");
+        if (resultText){
+            resultText.textContent = "";
+        }
+
         updateTurnIndicator();
     }
 
