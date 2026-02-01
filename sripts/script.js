@@ -117,6 +117,7 @@ const displayController = (() => {
         const startButton = document.querySelector('.start-button');
         startButton.addEventListener("click", () => {
             createGrid();
+            startButton.remove();
         });
     }
     let startFlag = false;
